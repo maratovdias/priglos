@@ -509,3 +509,11 @@ window.addEventListener('scroll', function() {
         element.style.transform = `translateY(${scrolled * speed}px)`;
     });
 });
+
+// Экспортируем функции в глобальную область (чтобы inline onclick в HTML работали)
+window.handleRSVP = handleRSVP;
+window.showGuestsList = showGuestsList;
+window.closeGuestsList = closeGuestsList;
+window.scrollToSection = scrollToSection;
+window.changeSlide = changeSlide;
+window.currentSlide = currentSlide;
