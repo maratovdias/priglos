@@ -9,12 +9,14 @@ import { getDatabase, ref, push, onValue, get, child } from "https://www.gstatic
 const firebaseConfig = {
   apiKey: "AIzaSyD62fO9Gofm5kdcu7-lU2zpGooWxaulz-w",
   authDomain: "priglos-94cb0.firebaseapp.com",
+  databaseURL: "https://priglos-94cb0-default-rtdb.firebaseio.com", // <- добавлено
   projectId: "priglos-94cb0",
   storageBucket: "priglos-94cb0.firebasestorage.app",
   messagingSenderId: "1032782433233",
   appId: "1:1032782433233:web:3ee64fc64ee691dcb7aef0",
   measurementId: "G-SECGY65S4E"
 };
+
 
 // Инициализация Firebase
 const app = initializeApp(firebaseConfig);
@@ -112,7 +114,7 @@ async function fetchGuestsOnce() {
 // ------------------------ Рендер списка гостей и статистика ------------------------
 function renderGuestsList(guests) {
   const guestsList = document.getElementById('guestsList');
-  const totalGuestsEls = document.querySelectorAll('#totalGuests');
+  const totalGuestsEls = document.querySelectorAll('.totalGuests');
   const confirmedGuests = document.getElementById('confirmedGuests');
   const statsNumber = document.querySelector('.stats-number');
 
