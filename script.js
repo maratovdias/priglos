@@ -3,9 +3,9 @@
 // ------------------------ Firebase (modular) ------------------------
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js";
-import { getDatabase, ref, push, onValue, get, child } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 import { getDatabase, ref, push, set, onValue, get, child } 
   from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
 
 
 // Ваша конфигурация (вы присылали её)
