@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>70-летие Смағұлова Базаргүл</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=KZ+Balmoral:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* Небольшие стили для карты */
+        .map-container { 
+            position: relative; 
+            width: 100%; 
+            height: 420px; 
+            border-radius: 12px; 
+            overflow: hidden; 
+        }
+        .map-loading { 
+            position: absolute; 
+            inset: 0; 
+            display:flex; 
+            align-items:center; 
+            justify-content:center; 
+            background: rgba(255,255,255,0.95); 
+            z-index: 1000; 
+        }
+        .loading-spinner { 
+            width:36px; 
+            height:36px; 
+            border-radius:50%; 
+            border:4px solid #eee; 
+            border-top-color:#D4AF37; 
+            animation:spin 1s linear infinite; 
+        }
+        @keyframes spin { 
+            to { transform: rotate(360deg); } 
+        }
+        .map-overlay { 
+            position: absolute; 
+            right: 18px; 
+            bottom: 18px; 
+            background: rgba(255,255,255,0.98); 
+            padding:16px 20px; 
+            border-radius:10px; 
+            box-shadow:0 6px 18px rgba(0,0,0,0.1); 
+            z-index:1001; 
+        }
+        .map-overlay h3 {
+            margin: 0 0 8px 0;
+            color: #D4AF37;
+            font-size: 18px;
+        }
+        .map-overlay p {
+            margin: 4px 0;
+            color: #2c2c2c;
+        }
+        /* Leaflet стили */
+        #map {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Анимированный фон -->
+    <div class="animated-background">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+            <div class="shape shape-5"></div>
+        </div>
+    </div>
+
+    <!-- Навигация -->
+    <nav class="modern-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text">70</span>
+                <span class="logo-symbol">✨</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#event" class="nav-link">Іс-шара туралы</a>
+                <a href="#gallery" class="nav-link">Галерея</a>
+                <a href="#location" class="nav-link">Орналасқан жері</a>
+                <a href="#rsvp" class="nav-link">RSVP</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Заголовок -->
+        <header class="hero-section" id="event">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-crown"></i>
+                    <span>Мерейтойлық мереке</span>
+                </div>
+                <h1 class="hero-title">
+                    <span class="title-number">70</span>
+                    <span class="title-text">жыл</span>
+                </h1>
+                <h2 class="hero-name">Смағұлова Базаргүл</h2>
+                <div class="hero-subtitle">
+                    <p>Сіздерді салтанатты шараға шақырамыз</p>
+                    <div class="hero-date">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>16 қараша 2025</span>
+                    </div>
+                </div>
+                <div class="hero-cta">
+                    <button class="cta-button primary" onclick="scrollToSection('rsvp')">
+                        <i class="fas fa-check-circle"></i>
+                        Қатысуды растау
+                    </button>
+                    <button class="cta-button secondary" onclick="scrollToSection('gallery')">
+                        <i class="fas fa-images"></i>
+                        Галереяны қараңыз
+                    </button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-image">
+                    <img src="images/main.jpeg" alt="Смағұлова Базаргүл" class="main-photo">
+                </div>
+            </div>
+        </header>
+
+        <!-- Основная информация -->
+        <section class="event-details">
+            <div class="section-header">
+                <h2 class="section-title">Іс-шара туралы мәліметтер</h2>
+                <p class="section-subtitle">Мереке туралы барлық қажетті ақпарат</p>
+            </div>
+            <div class="details-grid">
+                <div class="detail-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-icon">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Күні</h3>
+                        <p class="card-value">16 қараша 2025</p>
+                        <p class="card-description">Жексенбі</p>
+                    </div>
+                </div>
+
+                <div class="detail-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Уақыт</h3>
+                        <p class="card-value">17:00</p>
+                        <p class="card-description">Мерекенің басталуы</p>
+                    </div>
+                </div>
+
+                <div class="detail-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Орын</h3>
+                        <p class="card-value">Sadu Grand Hall</p>
+                        <p class="card-description">Алматы қ.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Галерея -->
+        <section class="gallery-section" id="gallery">
+            <div class="section-header">
+                <h2 class="section-title">Фотогалерея</h2>
+                <p class="section-subtitle">Туған күн қызының өміріндегі сәттер</p>
+            </div>
+            <div class="gallery-container">
+                <div class="gallery-slider">
+                    <div class="slide active">
+                        <img src="images/1.jpeg" alt="Фото 1" class="gallery-image">
+                        <div class="slide-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="images/2.jpeg" alt="Фото 2" class="gallery-image">
+                        <div class="slide-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="images/3.jpeg" alt="Фото 3" class="gallery-image">
+                        <div class="slide-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="images/4.jpeg" alt="Фото 4" class="gallery-image">
+                        <div class="slide-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="images/5.jpeg" alt="Фото 5" class="gallery-image">
+                        <div class="slide-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Навигационные кнопки -->
+                <button class="gallery-btn prev-btn" onclick="changeSlide(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="gallery-btn next-btn" onclick="changeSlide(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+
+                <!-- Индикаторы слайдов -->
+                <div class="gallery-indicators">
+                    <span class="indicator active" onclick="currentSlide(1)"></span>
+                    <span class="indicator" onclick="currentSlide(2)"></span>
+                    <span class="indicator" onclick="currentSlide(3)"></span>
+                    <span class="indicator" onclick="currentSlide(4)"></span>
+                    <span class="indicator" onclick="currentSlide(5)"></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Карта -->
+        <section class="location-section" id="location">
+            <div class="section-header">
+                <h2 class="section-title">Орналасқан жері</h2>
+                <p class="section-subtitle">Өткізу орнына қалай жетуге болады</p>
+            </div>
+            <div class="location-content">
+                <div class="map-wrapper" style="position:relative;">
+                    <div id="map" class="map-container">
+                        <div id="map-loading" class="map-loading">
+                            <div class="loading-spinner"></div>
+                            <p style="margin-left:10px;">Карта жүктелуде...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Спонсор и артисты -->
+        <section class="team-section">
+            <div class="section-header">
+                <h2 class="section-title">Іс-шара командасы</h2>
+                <p class="section-subtitle">Мерекені ұйымдастырушылар мен қатысушылар</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-card sponsor-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <h3>Бас демеуші</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="member-photo">
+                            <img src="images/smag_meru.jpg" alt="Smagulova Meruert">
+                            <div class="photo-overlay">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        <h4>Smagulova Meruert</h4>
+                        <p class="member-role">Vip president</p>
+                    </div>
+                </div>
+
+                <div class="team-card artist-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-music"></i>
+                        </div>
+                        <h3>Әртістер</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="member-photo">
+                            <img src="images/roza-alqozha.jpg" alt="Роза Әлқожа">
+                            <div class="photo-overlay">
+                                <i class="fas fa-microphone"></i>
+                            </div>
+                        </div>
+                        <h4>Роза Әлқожа</h4>
+                        <p class="member-role">Суретші</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RSVP -->
+        <section class="rsvp-section" id="rsvp">
+            <div class="section-header">
+                <h2 class="section-title">Қатысуды растаңыз</h2>
+                <p class="section-subtitle">Шешіміңіз туралы бізге хабарлаңыз</p>
+            </div>
+            <div class="rsvp-container">
+                <div class="rsvp-form">
+                    <div class="form-group">
+                        <label for="guestName" class="form-label">
+                            <i class="fas fa-user"></i>
+                            Сіздің атыңыз бен тегіңіз
+                        </label>
+                        <input type="text" id="guestName" placeholder="Толық атыңызды енгізіңіз" class="form-input">
+                        <div class="input-focus-line"></div>
+                    </div>
+
+                    <div class="rsvp-actions">
+                        <button class="action-btn confirm-btn rsvp-btn yes-btn" onclick="handleRSVP('yes', event)">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Мен мерекеге келемін</span>
+                            <div class="btn-shine"></div>
+                            <span class="btn-ripple"></span>
+                        </button>
+                        <button class="action-btn decline-btn rsvp-btn no-btn" onclick="handleRSVP('no', event)">
+                            <i class="fas fa-times-circle"></i>
+                            <span>Өкінішке орай, мүмкін емес</span>
+                            <div class="btn-shine"></div>
+                            <span class="btn-ripple"></span>
+                        </button>
+                    </div>
+
+                    <div id="rsvp-message" class="rsvp-message"></div>
+                </div>
+
+                <div class="rsvp-stats">
+                    <div class="stats-card">
+                        <div class="stats-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stats-content">
+                            <span class="stats-number" id="totalGuests">0</span>
+                            <span class="stats-label">Барлық қонақтар</span>
+                        </div>
+                    </div>
+                    <button class="guests-btn" onclick="showGuestsList()">
+                        <i class="fas fa-list"></i>
+                        <span>Тізімді қарау</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Контакты -->
+        <section class="contact-section">
+            <div class="section-header">
+                <h2 class="section-title">Байланыс</h2>
+                <p class="section-subtitle">Барлық сұрақтар бойынша ұйымдастырушыларға хабарласыңыз</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h3>Анар Қадылбекқызы</h3>
+                        <p class="contact-role">Іс-шараны ұйымдастырушы</p>
+                        <a href="tel:+77471610713" class="contact-link">
+                            <i class="fas fa-phone-alt"></i>
+                            +7 747 161 0713
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <span class="logo-text">70</span>
+                <span class="logo-symbol">✨</span>
+            </div>
+            <p class="footer-text">Смағұлова Базаргүл</p>
+            <p class="footer-date">16 қараша 2025</p>
+            <div class="footer-social">
+                <a href="#" class="social-link">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-telegram"></i>
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Мерейтойлық мереке. Барлық құқықтар қорғалған.</p>
+        </div>
+    </footer>
+
+    <!-- Модальное окно со списком гостей -->
+    <div id="guestsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Қонақтар тізімі</h2>
+                <button class="close-btn" onclick="closeGuestsList()">
+                    <span>×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="guests-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalGuests">0</span>
+                        <span class="stat-label">Барлық қонақтар</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="confirmedGuests">0</span>
+                        <span class="stat-label">Растады</span>
+                    </div>
+                </div>
+                <div class="guests-list" id="guestsList">
+                    <div class="no-guests">
+                        <div class="no-guests-icon">👥</div>
+                        <p>Әлі ешкім қатысуды растаған жоқ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+
+    <script>
+        // Координаты Sadu Grand Hall
+        const LAT = 43.251467;
+        const LNG = 76.75248;
+
+        // Инициализация карты Leaflet
+        window.addEventListener('DOMContentLoaded', function() {
+            try {
+                // Создаем карту
+                const map = L.map('map').setView([LAT, LNG], 16);
+
+                // Добавляем тайлы OpenStreetMap
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors',
+                    maxZoom: 19
+                }).addTo(map);
+
+                // Добавляем маркер
+                const marker = L.marker([LAT, LNG]).addTo(map);
+
+                // Добавляем всплывающую подсказку
+                marker.bindPopup(`
+                    <div style="text-align: center; font-family: 'KZ Balmoral', serif;">
+                        <h3 style="color: #D4AF37; margin: 0 0 5px 0;">Sadu Grand Hall</h3>
+                        <p style="margin: 0; color: #2c2c2c;">Алматы қ.</p>
+                        <p style="margin: 5px 0 0 0; font-size: 12px; color: #666;">16 қараша 2025, 17:00</p>
+                    </div>
+                `).openPopup();
+
+                // Скрываем индикатор загрузки
+                const loading = document.getElementById('map-loading');
+                if (loading) loading.style.display = 'none';
+
+                console.log('Карта Leaflet успешно инициализирована');
+
+            } catch (e) {
+                console.error('Ошибка инициализации карты Leaflet:', e);
+                const mapContainer = document.getElementById('map');
+                if (mapContainer) {
+                    mapContainer.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#666;">Карта временно недоступна</div>';
+                }
+            }
+        });
+    </script>
+
+    <!-- Ваш основной скрипт страницы -->
+    <script src="script.js"></script>
+</body>
+</html>
