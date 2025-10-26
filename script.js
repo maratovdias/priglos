@@ -4,6 +4,9 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js";
 import { getDatabase, ref, push, onValue, get, child } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+import { getDatabase, ref, push, set, onValue, get, child } 
+  from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
 
 // Ваша конфигурация (вы присылали её)
 const firebaseConfig = {
@@ -70,8 +73,10 @@ function saveGuestToFirebase(name) {
     name: normalized,
     date: new Date().toISOString()
   };
-  return newRef.set(guestObj).then(() => guestObj);
+  // Вместо newRef.set(...) используем set(newRef, ...)
+  return set(newRef, guestObj).then(() => guestObj);
 }
+
 
 let guestsListener = null;
 let guestsCache = []; // локальная копия для удобства
